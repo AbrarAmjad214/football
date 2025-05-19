@@ -7,55 +7,65 @@ require 'PHPMailer/src/PHPMailer.php';
 require 'PHPMailer/src/SMTP.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $name = $_POST['name'] ?? '';
-    $father_name = $_POST['father_name'] ?? '';
-    $school = $_POST['school'] ?? '';
-    $class = $_POST['class'] ?? '';
-    $dob = $_POST['dob'] ?? '';
-    $gender = $_POST['gender'] ?? '';
-    $landline = $_POST['landline'] ?? '';
-    $mobile = $_POST['mobile'] ?? '';
-    $email = $_POST['email'] ?? '';
-    $address = $_POST['address'] ?? '';
-    $po = $_POST['po'] ?? '';
-    $injuries = $_POST['injuries'] ?? '';
-    $treatment = $_POST['treatment'] ?? '';
-    $jersey_size = $_POST['jersey_size'] ?? '';
-    $covid = $_POST['covid'] ?? '';
-    $covid_dates = $_POST['covid_dates'] ?? '';
-    $fav_player = $_POST['fav_player'] ?? '';
-    $fav_club = $_POST['fav_club'] ?? '';
-    $fav_position = $_POST['fav_position'] ?? '';
-    $player_reason = $_POST['player_reason'] ?? '';
-    $guardian_name = $_POST['guardian_name'] ?? '';
-    $relationship = $_POST['relationship'] ?? '';
-    $profession = $_POST['profession'] ?? '';
-    $emergency_no = $_POST['emergency_no'] ?? '';
-    $guardian_mobile = $_POST['guardian_mobile'] ?? '';
-    $guardian_email = $_POST['guardian_email'] ?? '';
-    $guardian_fav_player = $_POST['guardian_fav_player'] ?? '';
-    $guardian_fav_club = $_POST['guardian_fav_club'] ?? '';
-    $guardian_fav_pak_player = $_POST['guardian_fav_pak_player'] ?? '';
-    $guardian_reason = $_POST['guardian_reason'] ?? '';
-    $permission = $_POST['permission'] ?? '';
-    $guardian_signature = $_POST['guardian_signature'] ?? '';
-    $signature_date = $_POST['signature_date'] ?? '';
-    $reg_no = $_POST['reg_no'] ?? '';
-    $amount = $_POST['amount'] ?? '';
-    $payment_date = $_POST['payment_date'] ?? '';
-    $mode = $_POST['mode'] ?? '';
-    $cheque_no = $_POST['cheque_no'] ?? '';
-    $drawn_no = $_POST['drawn_no'] ?? '';
-    $cheque_date = $_POST['cheque_date'] ?? '';
+
+    function sanitize($data) {
+        return htmlspecialchars(trim($data), ENT_QUOTES, 'UTF-8');
+    }
+
+    $name = sanitize($_POST['name'] ?? '');
+    $father_name = sanitize($_POST['father_name'] ?? '');
+    $school = sanitize($_POST['school'] ?? '');
+    $class = sanitize($_POST['class'] ?? '');
+    $dob = sanitize($_POST['dob'] ?? '');
+    $gender = sanitize($_POST['gender'] ?? '');
+    $landline = sanitize($_POST['landline'] ?? '');
+    $mobile = sanitize($_POST['mobile'] ?? '');
+    $email = filter_var(trim($_POST['email'] ?? ''), FILTER_VALIDATE_EMAIL);
+    $address = sanitize($_POST['address'] ?? '');
+    $po = sanitize($_POST['po'] ?? '');
+    $injuries = sanitize($_POST['injuries'] ?? '');
+    $treatment = sanitize($_POST['treatment'] ?? '');
+    $jersey_size = sanitize($_POST['jersey_size'] ?? '');
+    $covid = sanitize($_POST['covid'] ?? '');
+    $covid_dates = sanitize($_POST['covid_dates'] ?? '');
+    $fav_player = sanitize($_POST['fav_player'] ?? '');
+    $fav_club = sanitize($_POST['fav_club'] ?? '');
+    $fav_position = sanitize($_POST['fav_position'] ?? '');
+    $player_reason = sanitize($_POST['player_reason'] ?? '');
+    $guardian_name = sanitize($_POST['guardian_name'] ?? '');
+    $relationship = sanitize($_POST['relationship'] ?? '');
+    $profession = sanitize($_POST['profession'] ?? '');
+    $emergency_no = sanitize($_POST['emergency_no'] ?? '');
+    $guardian_mobile = sanitize($_POST['guardian_mobile'] ?? '');
+    $guardian_email = filter_var(trim($_POST['guardian_email'] ?? ''), FILTER_VALIDATE_EMAIL);
+    $guardian_fav_player = sanitize($_POST['guardian_fav_player'] ?? '');
+    $guardian_fav_club = sanitize($_POST['guardian_fav_club'] ?? '');
+    $guardian_fav_pak_player = sanitize($_POST['guardian_fav_pak_player'] ?? '');
+    $guardian_reason = sanitize($_POST['guardian_reason'] ?? '');
+    $permission = sanitize($_POST['permission'] ?? '');
+    $guardian_signature = sanitize($_POST['guardian_signature'] ?? '');
+    $signature_date = sanitize($_POST['signature_date'] ?? '');
+    $reg_no = sanitize($_POST['reg_no'] ?? '');
+    $amount = sanitize($_POST['amount'] ?? '');
+    $payment_date = sanitize($_POST['payment_date'] ?? '');
+    $mode = sanitize($_POST['mode'] ?? '');
+    $cheque_no = sanitize($_POST['cheque_no'] ?? '');
+    $drawn_no = sanitize($_POST['drawn_no'] ?? '');
+    $cheque_date = sanitize($_POST['cheque_date'] ?? '');
+
+    if (!$email) {
+        echo "Invalid email address.";
+        exit;
+    }
 
     $mail = new PHPMailer(true);
     try {
-        // SMTP settings
+        // SMTP Configuration
         $mail->isSMTP();
         $mail->Host = 'smtp.hostinger.com';
         $mail->SMTPAuth = true;
-        $mail->Username = 'info@rocketmonii.com'; // your SMTP email
-        $mail->Password = 'Rocketmonilc@1994';    // your SMTP password
+        $mail->Username = 'info@rocketmonii.com'; // Your SMTP email
+        $mail->Password = 'Rocketmonilc@1994';    // Your SMTP password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 
@@ -68,7 +78,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $mail->Body = "
             <h2>Kick On Football Academy Registration</h2>
-
             <h3>Player's General Details</h3>
             <p><strong>Name:</strong> $name</p>
             <p><strong>Father's Name:</strong> $father_name</p>
