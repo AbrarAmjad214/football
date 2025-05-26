@@ -103,3 +103,6 @@ button[type="submit"] {
 .para{
   align-items: center;
 }
+.form-title{
+  margin-left: 50px;
+}
